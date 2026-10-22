@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RegistryItems from "@/components/registry/RegistryItems";
 import ShareButton from "@/components/registry/ShareButton";
-import { allRegistrySlugs, formatMoney, getRegistry } from "@/lib/data";
+import { allRegistrySlugs, getRegistry } from "@/lib/data";
 
 export function generateStaticParams() {
   return allRegistrySlugs().map((slug) => ({ slug }));
@@ -21,10 +21,7 @@ export default async function RegistryPage({ params }: { params: Promise<{ slug:
   const registry = getRegistry(slug);
   if (!registry) notFound();
 
-  const total = registry.items.reduce((s, i) => s + i.price, 0);
-  const funded = registry.items.reduce((s, i) => s + i.funded, 0);
   const guests = registry.items.reduce((s, i) => s + i.contributors, 0);
-  const pct = Math.round((funded / total) * 100);
 
   return (
     <>
@@ -61,16 +58,7 @@ export default async function RegistryPage({ params }: { params: Promise<{ slug:
 
         {/* Progress summary */}
         <section className="mx-auto max-w-6xl px-5 pt-12">
-          <div className="grid gap-6 rounded-3xl border border-line bg-white p-6 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-center md:p-8">
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted">Registry progress</p>
-              <div className="mt-3 h-2.5 rounded-full bg-sand">
-                <div className="h-2.5 rounded-full bg-gradient-to-r from-sage to-sage-dark" style={{ width: `${pct}%` }} />
-              </div>
-              <p className="mt-2 text-sm text-muted">
-                <span className="font-medium text-ink">{formatMoney(funded)}</span> raised of {formatMoney(total)} · {pct}%
-              </p>
-            </div>
+          <div className="grid gap-6 rounded-3xl border border-line bg-white p-6 md:grid-cols-3 md:items-center md:p-8">
             <Stat icon={<Gift className="h-5 w-5 text-sage-dark" />} value={String(registry.items.length)} label="Gifts listed" />
             <Stat
               icon={<Gift className="h-5 w-5 text-gold" />}
@@ -114,7 +102,7 @@ export default async function RegistryPage({ params }: { params: Promise<{ slug:
 
 function Stat({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return (
-    <div className="flex items-center gap-4 md:justify-center md:border-l md:border-line">
+    <div className="flex items-center gap-4 md:justify-center md:[&:not(:first-child)]:border-l md:border-line">
       <div className="grid h-11 w-11 place-items-center rounded-full bg-sand">{icon}</div>
       <div>
         <p className="font-display text-3xl leading-none">{value}</p>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NavAuth from "./auth/NavAuth";
 
 export default function Navbar() {
   return (
@@ -14,11 +15,9 @@ export default function Navbar() {
           <Link href="/#faq" className="hover:text-ink">FAQ</Link>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/registry/sarah-and-james" className="hidden text-sm text-muted hover:text-ink sm:block">
-            Find a couple
-          </Link>
+          <NavAuth />
           <Link
-            href="/#start"
+            href="/dashboard/new"
             className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-ivory transition hover:bg-sage-dark"
           >
             Create registry

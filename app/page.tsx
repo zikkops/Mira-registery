@@ -75,7 +75,7 @@ const faqs = [
   },
   {
     q: "What happens if an item isn't fully funded?",
-    a: "Couples can top up the remainder themselves, move the funds to another item, or keep the balance as store credit with that supplier.",
+    a: "Every registry closes on November 15. After that, couples can rearrange the money collected — moving funds from items they can live without to the ones they really want — and we order everything that is fully funded.",
   },
   {
     q: "Who are the suppliers?",
@@ -112,7 +112,7 @@ export default function Home() {
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
                 <Link
-                  href="#start"
+                  href="/dashboard/new"
                   className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-ivory transition hover:bg-sage-dark"
                 >
                   Create your registry <ArrowRight className="h-4 w-4" />
@@ -368,9 +368,9 @@ export default function Home() {
               who love you help build your home.
             </p>
             <div className="relative mt-9 flex flex-wrap justify-center gap-3">
-              <span className="cursor-pointer rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-ink">
+              <Link href="/dashboard/new" className="rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-ink">
                 Create your free registry
-              </span>
+              </Link>
               <Link href="/registry/sarah-and-james" className="rounded-full border border-ivory/40 px-7 py-3.5 text-sm font-medium hover:border-ivory">
                 Find a couple&apos;s registry
               </Link>
