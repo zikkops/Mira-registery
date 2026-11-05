@@ -2,11 +2,14 @@
 // localStorage so the flow survives page reloads; there is no real backend yet.
 
 import { useSyncExternalStore } from "react";
-import { allRegistrySlugs, catalogById, getRegistry, type CatalogItem } from "./data";
+import { allRegistrySlugs, catalogById, getRegistry, type CatalogItem, type Occasion } from "./data";
 
 export type DashItem = { catalogId: string; funded: number; contributors: number };
 
 export type DashRegistry = {
+  occasion?: Occasion;
+  title?: string;
+  headline?: string;
   partnerOne: string;
   partnerTwo: string;
   date: string;
@@ -36,6 +39,9 @@ function seed(): DemoState {
   for (const slug of allRegistrySlugs()) {
     const r = getRegistry(slug)!;
     registries[slug] = {
+      occasion: r.occasion,
+      title: r.title,
+      headline: r.headline,
       partnerOne: r.partnerOne,
       partnerTwo: r.partnerTwo,
       date: r.date,
@@ -52,7 +58,9 @@ function seed(): DemoState {
 function read() {
   if (state === undefined) {
     try {
-      state = JSON.parse(localStorage.getItem(KEY) ?? "null") ?? seed();
+      const saved: DemoState | null = JSON.parse(localStorage.getItem(KEY) ?? "null");
+      // Merge so example registries added after a visitor's first load still appear.
+      state = saved ? { ...saved, registries: { ...seed().registries, ...saved.registries } } : seed();
     } catch {
       state = seed();
     }

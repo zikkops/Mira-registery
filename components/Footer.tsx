@@ -9,8 +9,8 @@ export default function Footer() {
             Mira<span className="text-gold">.</span>
           </p>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
-            The wedding registry where every guest can chip in towards the gifts that matter —
-            delivered by suppliers we trust.
+            The gift registry for weddings, birthdays, baby showers and more. Every guest can chip in towards the
+            gifts that matter — delivered by stores we trust.
           </p>
         </div>
         <div>

@@ -12,9 +12,9 @@ const cormorant = Cormorant_Garamond({
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Mira — Wedding Registry",
+  title: "Mira — Gift Registry for Every Occasion",
   description:
-    "A wedding registry where guests contribute towards the gifts couples actually want, delivered by trusted local suppliers.",
+    "A gift registry for weddings, birthdays, baby showers and more — guests chip in towards the gifts you actually want, delivered by trusted local stores.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

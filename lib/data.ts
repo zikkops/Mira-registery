@@ -28,9 +28,27 @@ export type Contribution = {
   when: string;
 };
 
+export type Occasion =
+  | "wedding"
+  | "engagement"
+  | "bridalShower"
+  | "bachelorette"
+  | "birthday"
+  | "baby"
+  | "genderReveal"
+  | "baptism"
+  | "graduation";
+
 export type Registry = {
   slug: string;
+  /** Defaults to "wedding". Changes the wording and look of the guest page. */
+  occasion?: Occasion;
+  /** Overrides the "A & B" heading, e.g. "Baby Saab". */
+  title?: string;
+  /** Short line under the heading, e.g. "turns 30". */
+  headline?: string;
   partnerOne: string;
+  /** Empty for single-person registries such as birthdays. */
   partnerTwo: string;
   date: string;
   venue: string;
@@ -111,7 +129,24 @@ const registries: Registry[] = [
 
 // Preset items couples can add from each store — the same products, without any funding.
 export type CatalogItem = Omit<RegistryItem, "funded" | "contributors">;
-export const catalog: CatalogItem[] = registries[0].items.map(({ funded: _f, contributors: _c, ...rest }) => rest);
+export const catalog: CatalogItem[] = [
+  ...registries[0].items.map(({ funded: _f, contributors: _c, ...rest }) => rest),
+  // Birthday favourites
+  { id: "e1", name: "Wireless Noise-Cancelling Headphones", description: "Over-ear, 30 hour battery, for flights and focus.", category: "Khoury Home", supplierId: "khoury", price: 350, image: "1505740420928-5e560c06d30e" },
+  { id: "e2", name: "Instant Film Camera", description: "Prints every party moment on the spot — film pack included.", category: "Khoury Home", supplierId: "khoury", price: 180, image: "1526170375885-4d8ecf77b99f" },
+  { id: "e3", name: "Smartwatch", description: "Fitness tracking, notifications and a week of battery.", category: "Khoury Home", supplierId: "khoury", price: 420, image: "1523275335684-37898b6baf30" },
+  { id: "e4", name: "City Bicycle", description: "Lightweight steel frame with leather saddle.", category: "Abdel Tahhan", supplierId: "tahhan", price: 780, image: "1485965120184-e220f721d03e" },
+  // Baby & nursery
+  { id: "n1", name: "Wooden & Plush Toy Basket", description: "Stacking blocks, soft animals and a rattle or two.", category: "ABC", supplierId: "abc", price: 160, image: "1515488042361-ee00e0ddd4e4" },
+  { id: "n2", name: "Knitted Newborn Outfits", description: "Five cosy cotton-knit sets, 0–6 months.", category: "ABC", supplierId: "abc", price: 140, image: "1522771930-78848d9293e8" },
+  { id: "n3", name: "Organic Swaddle Set", description: "Four breathable muslin swaddles.", category: "ABC", supplierId: "abc", price: 95, image: "1555252333-9f8e92e65df9" },
+  { id: "n4", name: "Baby Sleep Bundle", description: "Bassinet mattress, fitted sheets and a sleep sack.", category: "ABC", supplierId: "abc", price: 380, image: "1544126592-807ade215a0b" },
+  { id: "n5", name: "Padded Play Mat", description: "Soft, wipe-clean mat for tummy time and first crawls.", category: "ABC", supplierId: "abc", price: 210, image: "1617331140180-e8262094733a" },
+  { id: "n6", name: "Baby Swim Float & Beach Kit", description: "Float with sunshade, hat and baby sunglasses.", category: "ABC", supplierId: "abc", price: 75, image: "1519689680058-324335c77eba" },
+];
+
+export const displayName = (r: { partnerOne: string; partnerTwo: string; title?: string }) =>
+  r.title ?? (r.partnerTwo ? `${r.partnerOne} & ${r.partnerTwo}` : r.partnerOne);
 export const catalogById = (id: string) => catalog.find((c) => c.id === id);
 
 const preset = (id: string, funded: number, contributors: number): RegistryItem => ({
@@ -192,6 +227,59 @@ registries.push(
     contributions: [
       { name: "Uncle Georges", amount: 500, item: "French Door Refrigerator", message: "May it always be full!", when: "1 day ago" },
       { name: "Rita & Sami", amount: 150, item: "Tan Leather Chesterfield", message: "For lazy Sundays together.", when: "1 week ago" },
+    ],
+  },
+  {
+    slug: "rana-turns-30",
+    occasion: "birthday",
+    headline: "is turning 30",
+    partnerOne: "Rana",
+    partnerTwo: "",
+    date: "December 12, 2026",
+    venue: "Rooftop party, Mar Mikhael",
+    city: "Beirut",
+    story:
+      "Thirty years, a new decade and a long list of adventures still to come. Instead of guessing, chip in towards something I'll genuinely use — and come dance with me.",
+    items: [
+      preset("e1", 350, 6),
+      preset("e2", 120, 3),
+      preset("e3", 150, 2),
+      preset("e4", 300, 4),
+      preset("i19", 560, 7),
+      preset("i26", 450, 5),
+      preset("i15", 0, 0),
+    ],
+    contributions: [
+      { name: "Dana", amount: 80, item: "Wireless Noise-Cancelling Headphones", message: "For all the flights you keep promising to take. Happy 30th!", when: "1 day ago" },
+      { name: "The office crew", amount: 200, item: "Couples Spa Day", message: "You deserve a whole day off. Bring someone fun!", when: "3 days ago" },
+    ],
+  },
+  {
+    slug: "baby-saab",
+    occasion: "baby",
+    title: "Baby Saab",
+    headline: "is on the way",
+    partnerOne: "Lea",
+    partnerTwo: "Marc",
+    date: "Due March 3, 2027",
+    venue: "Garden brunch shower",
+    city: "Jounieh",
+    story:
+      "Our little one arrives in the spring and we can't wait to meet them. Thank you for helping us get the nursery — and ourselves — ready.",
+    items: [
+      preset("n1", 160, 4),
+      preset("n2", 140, 3),
+      preset("n3", 60, 2),
+      preset("n4", 200, 3),
+      preset("n5", 0, 0),
+      preset("n6", 75, 2),
+      preset("i20", 650, 8),
+      preset("i15", 300, 3),
+      preset("i22", 150, 2),
+    ],
+    contributions: [
+      { name: "Teta Mona", amount: 140, item: "Knitted Newborn Outfits", message: "Knitted with love (well, bought with love). Can't wait to hold them!", when: "2 days ago" },
+      { name: "Chris & Yara", amount: 250, item: "Front-Load Washing Machine", message: "Trust us, you'll need this more than anything else.", when: "4 days ago" },
     ],
   },
 );

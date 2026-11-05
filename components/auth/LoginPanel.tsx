@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ArrowRight, Heart, RotateCcw, ShieldCheck } from "lucide-react";
-import { formatMoney } from "@/lib/data";
+import { displayName, formatMoney } from "@/lib/data";
 import { login, resetDemo, totals, useDemo } from "@/lib/dashboard-store";
 
 export default function LoginPanel() {
@@ -46,12 +46,11 @@ export default function LoginPanel() {
                   className="group flex w-full items-center gap-4 rounded-2xl border border-line px-4 py-3 text-left transition hover:border-ink"
                 >
                   <div className="font-display grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sand text-lg">
-                    {r.partnerOne.charAt(0)}
-                    {r.partnerTwo.charAt(0)}
+                    {initials(displayName(r))}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">
-                      {r.partnerOne} &amp; {r.partnerTwo}
+                      {displayName(r)}
                     </p>
                     <p className="truncate text-xs text-muted">
                       {r.date} · {formatMoney(t.paid)} paid of {formatMoney(t.total)}
@@ -101,3 +100,10 @@ export default function LoginPanel() {
     </section>
   );
 }
+
+const initials = (name: string) =>
+  name
+    .split(/ & | /)
+    .map((w) => w.charAt(0))
+    .join("")
+    .slice(0, 2);

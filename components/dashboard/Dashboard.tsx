@@ -7,7 +7,7 @@ import { CircleDollarSign, ExternalLink, Gift, HandCoins, LogIn, LogOut, PiggyBa
 import CatalogPicker from "./CatalogPicker";
 import ClosingNotice from "./ClosingNotice";
 import Rearrange from "./Rearrange";
-import { CLOSING_DATE, formatMoney, photo, supplierById, suppliers } from "@/lib/data";
+import { CLOSING_DATE, displayName, formatMoney, photo, supplierById, suppliers } from "@/lib/data";
 import {
   hasGuestPage,
   logout,
@@ -137,7 +137,7 @@ export function Manage({
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold">{label}</p>
           <h1 className="font-display mt-3 text-4xl md:text-5xl">
-            {registry.partnerOne} <span className="italic text-gold">&amp;</span> {registry.partnerTwo}
+            {displayName(registry)}
           </h1>
           <p className="mt-2 text-sm text-muted">
             {registry.date}

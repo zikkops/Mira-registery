@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CircleDollarSign, Gift, LogIn, LogOut, PiggyBank, Search, Users } from "lucide-react";
 import { Manage } from "@/components/dashboard/Dashboard";
-import { CLOSING_DATE, CLOSING_LABEL, formatMoney, suppliers } from "@/lib/data";
+import { CLOSING_DATE, CLOSING_LABEL, displayName, formatMoney, suppliers } from "@/lib/data";
 import { logout, totals, useDemo } from "@/lib/dashboard-store";
+import { occasionInfo } from "@/lib/occasions";
 
 export default function AdminPanel() {
   const demo = useDemo();
@@ -49,7 +50,7 @@ export default function AdminPanel() {
   const paid = all.reduce((s, i) => s + i.funded, 0);
   const left = all.reduce((s, i) => s + i.price, 0) - paid;
   const q = query.trim().toLowerCase();
-  const visible = rows.filter(({ r }) => !q || `${r.partnerOne} ${r.partnerTwo} ${r.city} ${r.slug}`.toLowerCase().includes(q));
+  const visible = rows.filter(({ r }) => !q || `${displayName(r)} ${r.partnerOne} ${r.partnerTwo} ${r.occasion ?? "wedding"} ${r.city} ${r.slug}`.toLowerCase().includes(q));
   const isClosed = (previewClosed: boolean) => previewClosed || Date.now() > CLOSING_DATE.getTime();
 
   return (
@@ -141,7 +142,12 @@ export default function AdminPanel() {
             >
               <span className="col-span-2 lg:col-span-1">
                 <span className="font-medium">
-                  {r.partnerOne} &amp; {r.partnerTwo}
+                  {displayName(r)}
+                  {r.occasion && r.occasion !== "wedding" && (
+                    <span className="ml-2 rounded-full bg-sand px-2 py-0.5 align-middle text-[10px] font-medium uppercase tracking-wider text-muted">
+                      {occasionInfo[r.occasion].label}
+                    </span>
+                  )}
                 </span>
                 <span className="block text-xs text-muted">mira.com/{r.slug}</span>
               </span>

@@ -8,7 +8,7 @@ import { categories, formatMoney, photo, supplierById, type Category, type Regis
 
 type Sort = "featured" | "low" | "high" | "closest";
 
-export default function RegistryItems({ items, couple }: { items: RegistryItem[]; couple: string }) {
+export default function RegistryItems({ items, couple, title = "Our wish list" }: { items: RegistryItem[]; couple: string; title?: string }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Category | "All">("All");
   const [sort, setSort] = useState<Sort>("featured");
@@ -48,7 +48,7 @@ export default function RegistryItems({ items, couple }: { items: RegistryItem[]
   return (
     <section className="mx-auto max-w-6xl px-5 py-16">
       <div className="text-center">
-        <h2 className="font-display text-4xl md:text-5xl">Our wish list</h2>
+        <h2 className="font-display text-4xl md:text-5xl">{title}</h2>
         <p className="mt-2 text-sm text-muted">Contribute any amount towards a gift — every bit helps.</p>
       </div>
 

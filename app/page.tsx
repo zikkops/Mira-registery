@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Check,
   Gift,
-  HeartHandshake,
   Link2,
   ShieldCheck,
   Store,
@@ -13,18 +12,20 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { formatMoney, photo, suppliers } from "@/lib/data";
+import HeroPreview from "@/components/HeroPreview";
+import { photo, suppliers } from "@/lib/data";
+import { occasionInfo, occasionOrder } from "@/lib/occasions";
 
 const steps = [
   {
     icon: Gift,
-    title: "Couples pick real gifts",
-    body: "Browse cookware, beds, furniture, appliances and honeymoons from our partner suppliers and add them to your registry.",
+    title: "Pick the gifts you want",
+    body: "Wedding, engagement, birthday, baby shower, graduation and more — browse real products from our partner stores and add them to your registry.",
   },
   {
     icon: Link2,
     title: "Share one personal link",
-    body: "Every couple gets their own page — mira.com/your-names — to send with invitations or add to your wedding website.",
+    body: "Every registry gets its own page — mira.com/your-event — to send with invitations or share in the group chat.",
   },
   {
     icon: Users,
@@ -34,48 +35,48 @@ const steps = [
   {
     icon: Truck,
     title: "We deliver the gift",
-    body: "Once an item is fully funded, we order it from the supplier and deliver it to the couple's door — no cash handling, no hassle.",
+    body: "Once the registry closes, we take care of the rest with our partner stores and arrange delivery to your door — no cash handling, no hassle.",
   },
 ];
 
-const categoryTiles = [
-  { name: "Cookware", image: "1590794056226-79ef3a8147e1" },
-  { name: "Beds & Mattresses", image: "1560185128-e173042f79dd" },
-  { name: "Furniture", image: "1555041469-a586c61ea9bc" },
-  { name: "Bedding & Bath", image: "1523471826770-c437b4636fe6" },
-  { name: "Appliances", image: "1620807773206-49c1f2957417" },
-  { name: "Honeymoons", image: "1612698093158-e07ac200d44e" },
-];
+const occasions = occasionOrder.map((key) => {
+  const o = occasionInfo[key];
+  return { name: o.plural, image: o.cover, href: o.example, Icon: o.Icon, accent: o.accent };
+});
 
 const testimonials = [
   {
     quote:
       "We never thought we'd afford a proper bed frame and mattress so soon. Thirty guests chipped in and it arrived two weeks after the wedding.",
     name: "Nadia & Omar",
-    detail: "Married May 2026",
+    detail: "Wedding registry",
   },
   {
     quote:
-      "So much easier than guessing what to buy. I put $40 towards their cookware set and got a lovely thank-you note.",
-    name: "Grace",
-    detail: "Wedding guest",
+      "For my 30th I finally got the camera I'd been eyeing for years — instead of five candles and a mug.",
+    name: "Rana",
+    detail: "Birthday registry",
   },
   {
     quote:
-      "No duplicate toasters, no returns. Just the things we actually wanted, from shops we actually like.",
-    name: "Leo & Hannah",
-    detail: "Married Sept 2026",
+      "Friends covered the washing machine and the nursery basics. With a newborn, that was the best gift imaginable.",
+    name: "Lea & Marc",
+    detail: "Baby shower registry",
   },
 ];
 
 const faqs = [
   {
+    q: "What can I make a registry for?",
+    a: "Weddings, engagements, bridal showers, bachelorettes, birthdays, baby showers, gender reveals, baptisms and graduations — any moment where people want to give you something.",
+  },
+  {
     q: "How do guests contribute?",
-    a: "Guests open the couple's link, pick an item, and choose any amount to put towards it. They can add a personal message that the couple sees on their page.",
+    a: "Guests open your link, pick an item, and choose any amount to put towards it. They can add a personal message that you'll see on your page.",
   },
   {
     q: "What happens if an item isn't fully funded?",
-    a: "Every registry closes on November 15. After that, couples can rearrange the money collected — moving funds from items they can live without to the ones they really want — and we order everything that is fully funded.",
+    a: "Every registry has a closing date. After that, you can rearrange the money collected — moving funds from items you can live without to the ones you really want — and we order everything that is fully funded.",
   },
   {
     q: "Who are the suppliers?",
@@ -83,7 +84,7 @@ const faqs = [
   },
   {
     q: "Is there a fee?",
-    a: "Creating a registry is free for couples. A small processing fee is shown to guests at checkout.",
+    a: "Creating a registry is free. A small processing fee is shown to guests at checkout.",
   },
 ];
 
@@ -102,13 +103,13 @@ export default function Home() {
           <div className="pointer-events-none absolute -left-32 top-60 h-[380px] w-[380px] rounded-full bg-[#dfe5da]/70 blur-3xl" />
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-5 pb-24 pt-16 md:pt-24 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
-              <SectionLabel>The group-gift wedding registry</SectionLabel>
+              <SectionLabel>The group-gift registry for every occasion</SectionLabel>
               <h1 className="font-display mt-5 text-5xl leading-[1.05] font-medium md:text-7xl">
-                Gifts they&apos;ll use <em className="text-sage-dark">for a lifetime</em>, funded together.
+                The gifts you <em className="text-sage-dark">actually want</em>, funded together.
               </h1>
               <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted">
-                Mira lets wedding guests contribute any amount towards the things couples really need
-                — cookware, a new bed, the sofa, the honeymoon — from suppliers we trust.
+                Weddings, birthdays, baby showers and more — add the gifts you really want, share one link,
+                and let the people you love chip in any amount, from stores we trust.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
                 <Link
@@ -124,58 +125,23 @@ export default function Home() {
                   See an example
                 </Link>
               </div>
+              <p className="mt-4 text-sm text-muted">
+                Examples:{" "}
+                <Link href="/registry/sarah-and-james" className="font-medium text-ink underline-offset-4 hover:underline">Wedding</Link>
+                {" · "}
+                <Link href="/registry/rana-turns-30" className="font-medium text-ink underline-offset-4 hover:underline">Birthday</Link>
+                {" · "}
+                <Link href="/registry/baby-saab" className="font-medium text-ink underline-offset-4 hover:underline">Baby shower</Link>
+              </p>
               <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-muted">
-                <span className="flex items-center gap-2"><Check className="h-4 w-4 text-sage" /> Free for couples</span>
+                <span className="flex items-center gap-2"><Check className="h-4 w-4 text-sage" /> Free to create</span>
                 <span className="flex items-center gap-2"><Check className="h-4 w-4 text-sage" /> Any amount, any guest</span>
                 <span className="flex items-center gap-2"><Check className="h-4 w-4 text-sage" /> Delivered to your door</span>
               </div>
             </div>
 
             {/* Preview card */}
-            <div className="relative mx-auto w-full max-w-md">
-              <div className="absolute -left-6 -top-6 h-full w-full rotate-[-4deg] rounded-[2rem] bg-sand" />
-              <div className="relative rounded-[2rem] border border-line bg-white p-6 shadow-[0_30px_60px_-30px_rgba(43,38,34,0.35)]">
-                <div className="text-center">
-                  <p className="text-[11px] uppercase tracking-[0.3em] text-muted">The wedding of</p>
-                  <p className="font-display mt-1 text-4xl">Sarah &amp; James</p>
-                  <p className="mt-1 text-xs text-muted">June 14, 2027 · Napa Valley</p>
-                </div>
-                <div className="mt-6 space-y-3">
-                  {[
-                    { name: "Stainless Cookware Set", image: "1604414499020-f9ac575bc5ec", price: 1200, funded: 780 },
-                    { name: "Upholstered King Bed", image: "1560185128-e173042f79dd", price: 2400, funded: 1350 },
-                    { name: "Amalfi Honeymoon", image: "1612698093158-e07ac200d44e", price: 6500, funded: 4120 },
-                  ].map((it) => {
-                    const pct = Math.round((it.funded / it.price) * 100);
-                    return (
-                      <div key={it.name} className="flex items-center gap-4 rounded-2xl border border-line/80 p-3">
-                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-sand">
-                          <Image src={photo(it.image, 200)} alt={it.name} fill sizes="56px" className="object-cover" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex justify-between gap-2 text-sm">
-                            <span className="truncate font-medium">{it.name}</span>
-                            <span className="text-muted">{pct}%</span>
-                          </div>
-                          <div className="mt-2 h-1.5 rounded-full bg-sand">
-                            <div className="h-1.5 rounded-full bg-sage" style={{ width: `${pct}%` }} />
-                          </div>
-                          <p className="mt-1.5 text-xs text-muted">
-                            {formatMoney(it.funded)} of {formatMoney(it.price)}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="mt-5 rounded-full bg-ink py-3 text-center text-sm font-medium text-ivory">
-                  Contribute a gift
-                </div>
-              </div>
-              <div className="absolute -bottom-5 -right-3 flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-xs shadow-lg md:-right-8">
-                <HeartHandshake className="h-4 w-4 text-gold" /> Aunt Linda gave $250
-              </div>
-            </div>
+            <HeroPreview />
           </div>
         </section>
 
@@ -183,10 +149,10 @@ export default function Home() {
         <section className="border-y border-line bg-white/60">
           <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-5 py-10 text-center md:grid-cols-4">
             {[
-              ["2,400+", "Couples registered"],
+              ["2,400+", "Registries created"],
               ["$3.1M", "Gifted by guests"],
               ["40+", "Partner suppliers"],
-              ["4.9★", "Average couple rating"],
+              ["4.9★", "Average host rating"],
             ].map(([n, l]) => (
               <div key={l}>
                 <p className="font-display text-4xl">{n}</p>
@@ -220,18 +186,19 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Couples / Guests */}
+        {/* Hosts / Guests */}
         <section className="bg-sand/60">
           <div className="mx-auto grid max-w-6xl gap-6 px-5 py-24 md:grid-cols-2">
             <div className="rounded-[2rem] bg-ink p-10 text-ivory">
-              <SectionLabel>For couples</SectionLabel>
-              <h3 className="font-display mt-4 text-4xl">Build a home, not a pile of duplicates.</h3>
+              <SectionLabel>For you</SectionLabel>
+              <h3 className="font-display mt-4 text-4xl">Stop getting gifts you don&apos;t actually want.</h3>
+              <p className="mt-4 text-ivory/80">Let the people you love give you what you actually want.</p>
               <ul className="mt-8 space-y-4 text-sm text-ivory/80">
                 {[
                   "Choose from curated items across trusted suppliers",
                   "Your own shareable registry page with your story",
                   "Track contributions and messages in real time",
-                  "Items delivered once they're fully funded",
+                  "Gifts delivered after your registry closes",
                 ].map((t) => (
                   <li key={t} className="flex gap-3"><Check className="mt-0.5 h-4 w-4 shrink-0 text-gold" />{t}</li>
                 ))}
@@ -239,12 +206,13 @@ export default function Home() {
             </div>
             <div className="rounded-[2rem] border border-line bg-white p-10">
               <SectionLabel>For guests</SectionLabel>
-              <h3 className="font-display mt-4 text-4xl">Give something meaningful, at any budget.</h3>
+              <h3 className="font-display mt-4 text-4xl">Stuck on what to buy?</h3>
+              <p className="mt-4 text-muted">Now it&apos;s easy — you know exactly what they want.</p>
               <ul className="mt-8 space-y-4 text-sm text-muted">
                 {[
-                  "No account needed — just open the couple's link",
+                  "No account needed — just open their link",
                   "Put any amount towards a specific item",
-                  "Leave a personal message for the couple",
+                  "Leave a personal message with your gift",
                   "Secure checkout and instant receipt",
                 ].map((t) => (
                   <li key={t} className="flex gap-3"><Check className="mt-0.5 h-4 w-4 shrink-0 text-sage" />{t}</li>
@@ -254,31 +222,42 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Categories */}
-        <section className="mx-auto max-w-6xl px-5 py-24">
+        {/* Occasions */}
+        <section id="occasions" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-24">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <SectionLabel>What you can register for</SectionLabel>
-              <h2 className="font-display mt-4 text-4xl md:text-5xl">Everything for your first home</h2>
+              <SectionLabel>One registry, any occasion</SectionLabel>
+              <h2 className="font-display mt-4 text-4xl md:text-5xl">Whatever you&apos;re celebrating</h2>
             </div>
-            <Link href="/registry/sarah-and-james" className="flex items-center gap-2 text-sm font-medium text-sage-dark hover:underline">
-              Browse an example registry <ArrowRight className="h-4 w-4" />
-            </Link>
+            <p className="max-w-sm text-sm text-muted">
+              Every occasion gets its own colours and wording. Open an example, or start your own.
+            </p>
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-            {categoryTiles.map((c) => (
-              <div key={c.name} className="group rounded-3xl border border-line bg-white p-3 transition hover:-translate-y-1 hover:shadow-lg">
-                <div className="relative aspect-square overflow-hidden rounded-2xl bg-sand">
+          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3">
+            {occasions.map((o) => (
+              <Link
+                key={o.name}
+                href={o.href ?? "/dashboard/new"}
+                className="group flex items-center gap-4 rounded-3xl border border-line bg-white p-3 transition hover:-translate-y-1 hover:shadow-lg"
+              >
+                <div className="relative aspect-square w-20 shrink-0 overflow-hidden rounded-2xl bg-sand md:w-24">
                   <Image
-                    src={photo(c.image, 400)}
-                    alt={c.name}
+                    src={photo(o.image, 300)}
+                    alt={o.name}
                     fill
-                    sizes="(min-width: 1024px) 180px, (min-width: 768px) 33vw, 50vw"
+                    sizes="96px"
                     className="object-cover transition duration-700 group-hover:scale-110"
                   />
                 </div>
-                <p className="mt-4 text-center text-sm font-medium">{c.name}</p>
-              </div>
+                <div className="min-w-0">
+                  <p className="flex items-center gap-2 text-sm font-medium md:text-base">
+                    <o.Icon className={`h-4 w-4 shrink-0 ${o.accent}`} /> {o.name}
+                  </p>
+                  <p className="mt-1 flex items-center gap-1 text-xs text-muted">
+                    {o.href ? "See example" : "Start one"} <ArrowRight className="h-3 w-3" />
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
         </section>
@@ -292,7 +271,7 @@ export default function Home() {
                 <h2 className="font-display mt-4 text-4xl md:text-5xl">Partners we know and trust</h2>
                 <p className="mt-5 leading-relaxed text-muted">
                   Every item on Mira comes from a vetted supplier. We handle the order, the delivery and
-                  any after-care — so couples get quality and guests know their gift arrives.
+                  any after-care — so you get quality and guests know their gift arrives.
                 </p>
                 <div className="mt-8 flex items-center gap-3 text-sm text-muted">
                   <ShieldCheck className="h-5 w-5 text-sage" /> Quality-checked &amp; reviewed every year
@@ -320,7 +299,7 @@ export default function Home() {
         <section className="mx-auto max-w-6xl px-5 py-24">
           <div className="text-center">
             <SectionLabel>Kind words</SectionLabel>
-            <h2 className="font-display mt-4 text-4xl md:text-5xl">Loved by couples and guests</h2>
+            <h2 className="font-display mt-4 text-4xl md:text-5xl">Loved by hosts and guests</h2>
           </div>
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
@@ -364,15 +343,15 @@ export default function Home() {
             <div className="pointer-events-none absolute -bottom-24 -right-10 h-80 w-80 rounded-full bg-gold/20" />
             <h2 className="font-display relative text-4xl md:text-6xl">Ready to start your registry?</h2>
             <p className="relative mx-auto mt-5 max-w-xl text-ivory/80">
-              It takes five minutes to set up. Add your favourite pieces, share your link, and let the people
-              who love you help build your home.
+              It takes five minutes to set up. Add the gifts you really want, share your link, and let the people
+              who love you make your celebration unforgettable.
             </p>
             <div className="relative mt-9 flex flex-wrap justify-center gap-3">
               <Link href="/dashboard/new" className="rounded-full bg-ivory px-7 py-3.5 text-sm font-medium text-ink">
                 Create your free registry
               </Link>
               <Link href="/registry/sarah-and-james" className="rounded-full border border-ivory/40 px-7 py-3.5 text-sm font-medium hover:border-ivory">
-                Find a couple&apos;s registry
+                See an example registry
               </Link>
             </div>
           </div>
